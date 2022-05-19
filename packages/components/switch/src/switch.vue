@@ -81,8 +81,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { isPromise } from '@vue/shared'
 import { addUnit, debugWarn, isBoolean, throwError } from '@element-plus/utils'
 import ElIcon from '@element-plus/components/icon'
@@ -100,162 +100,145 @@ import {
   useSize,
 } from '@element-plus/hooks'
 import { switchEmits, switchProps } from './switch'
-
 import type { CSSProperties } from 'vue'
 
 const COMPONENT_NAME = 'ElSwitch'
 
-export default defineComponent({
-  name: COMPONENT_NAME,
-  components: { ElIcon, Loading },
-
-  props: switchProps,
-  emits: switchEmits,
-
-  setup(props, { emit }) {
-    const { formItem } = useFormItem()
-    const switchDisabled = useDisabled(computed(() => props.loading))
-    const ns = useNamespace('switch')
-
-    const { inputId } = useFormItemInputId(props, {
-      formItemContext: formItem,
-    })
-
-    const switchSize = useSize()
-    const isModelValue = ref(props.modelValue !== false)
-    const input = ref<HTMLInputElement>()
-    const core = ref<HTMLSpanElement>()
-
-    const switchKls = computed(() => [
-      ns.b(),
-      ns.m(switchSize.value),
-      ns.is('disabled', switchDisabled.value),
-      ns.is('checked', checked.value),
-    ])
-
-    const coreStyle = computed<CSSProperties>(() => ({
-      width: addUnit(props.width),
-    }))
-
-    watch(
-      () => props.modelValue,
-      () => {
-        isModelValue.value = true
-      }
-    )
-
-    watch(
-      () => props.value,
-      () => {
-        isModelValue.value = false
-      }
-    )
-
-    const actualValue = computed(() => {
-      return isModelValue.value ? props.modelValue : props.value
-    })
-
-    const checked = computed(() => actualValue.value === props.activeValue)
-
-    if (![props.activeValue, props.inactiveValue].includes(actualValue.value)) {
-      emit(UPDATE_MODEL_EVENT, props.inactiveValue)
-      emit(CHANGE_EVENT, props.inactiveValue)
-      emit(INPUT_EVENT, props.inactiveValue)
-    }
-
-    watch(checked, () => {
-      input.value!.checked = checked.value
-
-      if (props.activeColor || props.inactiveColor) {
-        setBackgroundColor()
-      }
-
-      if (props.validateEvent) {
-        formItem?.validate?.('change').catch((err) => debugWarn(err))
-      }
-    })
-
-    const handleChange = (): void => {
-      const val = checked.value ? props.inactiveValue : props.activeValue
-      emit(UPDATE_MODEL_EVENT, val)
-      emit(CHANGE_EVENT, val)
-      emit(INPUT_EVENT, val)
-      nextTick(() => {
-        input.value!.checked = checked.value
-      })
-    }
-
-    const switchValue = (): void => {
-      if (switchDisabled.value) return
-
-      const { beforeChange } = props
-      if (!beforeChange) {
-        handleChange()
-        return
-      }
-
-      const shouldChange = beforeChange()
-
-      const isExpectType = [
-        isPromise(shouldChange),
-        isBoolean(shouldChange),
-      ].some((i) => i)
-      if (!isExpectType) {
-        throwError(
-          COMPONENT_NAME,
-          'beforeChange must return type `Promise<boolean>` or `boolean`'
-        )
-      }
-
-      if (isPromise(shouldChange)) {
-        shouldChange
-          .then((result) => {
-            if (result) {
-              handleChange()
-            }
-          })
-          .catch((e) => {
-            debugWarn(COMPONENT_NAME, `some error occurred: ${e}`)
-          })
-      } else if (shouldChange) {
-        handleChange()
-      }
-    }
-
-    const setBackgroundColor = (): void => {
-      const newColor = checked.value ? props.activeColor : props.inactiveColor
-      const coreEl = core.value
-      if (props.borderColor) coreEl!.style.borderColor = props.borderColor
-      else if (!props.borderColor) coreEl!.style.borderColor = newColor
-      coreEl!.style.backgroundColor = newColor
-      ;(coreEl!.children[0] as HTMLDivElement).style.color = newColor
-    }
-
-    const focus = (): void => {
-      input.value?.focus?.()
-    }
-
-    onMounted(() => {
-      if (props.activeColor || props.inactiveColor || props.borderColor) {
-        setBackgroundColor()
-      }
-
-      input.value!.checked = checked.value
-    })
-
-    return {
-      ns,
-      input,
-      inputId,
-      core,
-      switchDisabled,
-      checked,
-      switchKls,
-      coreStyle,
-      handleChange,
-      switchValue,
-      focus,
-    }
-  },
+defineOptions({
+  name: 'ElSwitch',
 })
+
+const props = defineProps(switchProps)
+const emit = defineEmits(switchEmits)
+
+const { formItem } = useFormItem()
+const switchDisabled = useDisabled(computed(() => props.loading))
+const ns = useNamespace('switch')
+
+const { inputId } = useFormItemInputId(props, {
+  formItemContext: formItem,
+})
+
+const switchSize = useSize()
+const isModelValue = ref(props.modelValue !== false)
+const input = ref<HTMLInputElement>()
+const core = ref<HTMLSpanElement>()
+
+const switchKls = computed(() => [
+  ns.b(),
+  ns.m(switchSize.value),
+  ns.is('disabled', switchDisabled.value),
+  ns.is('checked', checked.value),
+])
+
+const coreStyle = computed<CSSProperties>(() => ({
+  width: addUnit(props.width),
+}))
+
+watch(
+  () => props.modelValue,
+  () => {
+    isModelValue.value = true
+  }
+)
+
+watch(
+  () => props.value,
+  () => {
+    isModelValue.value = false
+  }
+)
+
+const actualValue = computed(() => {
+  return isModelValue.value ? props.modelValue : props.value
+})
+
+const checked = computed(() => actualValue.value === props.activeValue)
+
+if (![props.activeValue, props.inactiveValue].includes(actualValue.value)) {
+  emit(UPDATE_MODEL_EVENT, props.inactiveValue)
+  emit(CHANGE_EVENT, props.inactiveValue)
+  emit(INPUT_EVENT, props.inactiveValue)
+}
+
+watch(checked, () => {
+  input.value!.checked = checked.value
+
+  if (props.activeColor || props.inactiveColor) {
+    setBackgroundColor()
+  }
+
+  if (props.validateEvent) {
+    formItem?.validate?.('change').catch((err) => debugWarn(err))
+  }
+})
+
+const handleChange = (): void => {
+  const val = checked.value ? props.inactiveValue : props.activeValue
+  emit(UPDATE_MODEL_EVENT, val)
+  emit(CHANGE_EVENT, val)
+  emit(INPUT_EVENT, val)
+  nextTick(() => {
+    input.value!.checked = checked.value
+  })
+}
+
+const switchValue = (): void => {
+  if (switchDisabled.value) return
+
+  const { beforeChange } = props
+  if (!beforeChange) {
+    handleChange()
+    return
+  }
+
+  const shouldChange = beforeChange()
+
+  const isExpectType = [isPromise(shouldChange), isBoolean(shouldChange)].some(
+    (i) => i
+  )
+  if (!isExpectType) {
+    throwError(
+      COMPONENT_NAME,
+      'beforeChange must return type `Promise<boolean>` or `boolean`'
+    )
+  }
+
+  if (isPromise(shouldChange)) {
+    shouldChange
+      .then((result) => {
+        if (result) {
+          handleChange()
+        }
+      })
+      .catch((e) => {
+        debugWarn(COMPONENT_NAME, `some error occurred: ${e}`)
+      })
+  } else if (shouldChange) {
+    handleChange()
+  }
+}
+
+const setBackgroundColor = (): void => {
+  const newColor = checked.value ? props.activeColor : props.inactiveColor
+  const coreEl = core.value
+  if (props.borderColor) coreEl!.style.borderColor = props.borderColor
+  else if (!props.borderColor) coreEl!.style.borderColor = newColor
+  coreEl!.style.backgroundColor = newColor
+  ;(coreEl!.children[0] as HTMLDivElement).style.color = newColor
+}
+
+const focus = (): void => {
+  input.value?.focus?.()
+}
+
+onMounted(() => {
+  if (props.activeColor || props.inactiveColor || props.borderColor) {
+    setBackgroundColor()
+  }
+
+  input.value!.checked = checked.value
+})
+
+defineExpose({ focus })
 </script>
