@@ -161,8 +161,8 @@ if (![props.activeValue, props.inactiveValue].includes(actualValue.value)) {
   emit(INPUT_EVENT, props.inactiveValue)
 }
 
-watch(checked, () => {
-  input.value!.checked = checked.value
+watch(checked, (val) => {
+  input.value!.checked = val
 
   if (props.activeColor || props.inactiveColor) {
     setBackgroundColor()
