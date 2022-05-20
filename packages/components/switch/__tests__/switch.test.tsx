@@ -5,6 +5,8 @@ import { debugWarn } from '@element-plus/utils'
 import { Checked, CircleClose } from '@element-plus/icons-vue'
 import { ElFormItem } from '@element-plus/components/form'
 import Switch from '../src/switch.vue'
+import type { VueWrapper } from '@vue/test-utils'
+import type { SwitchInstance } from '../src/switch'
 
 vi.mock('@element-plus/utils/error', () => ({
   debugWarn: vi.fn(),
@@ -202,7 +204,8 @@ describe('Switch.vue', () => {
     })
     const vm = wrapper.vm
     const coreWrapper = wrapper.find('.el-switch__core')
-    const switchWrapper = wrapper.findComponent(Switch)
+    const switchWrapper: VueWrapper<SwitchInstance> =
+      wrapper.findComponent(Switch)
     const switchVm = switchWrapper.vm
     const inputEl = vm.$el.querySelector('input')
 
@@ -228,7 +231,8 @@ describe('Switch.vue', () => {
     })
     const vm = wrapper.vm
     const coreWrapper = wrapper.find('.el-switch__core')
-    const switchWrapper = wrapper.findComponent(Switch)
+    const switchWrapper: VueWrapper<SwitchInstance> =
+      wrapper.findComponent(Switch)
     const switchVm = switchWrapper.vm
     const inputEl = vm.$el.querySelector('input')
 

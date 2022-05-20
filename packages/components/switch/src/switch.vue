@@ -112,7 +112,6 @@ const props = defineProps(switchProps)
 const emit = defineEmits(switchEmits)
 
 const { formItem } = useFormItem()
-const switchDisabled = useDisabled(computed(() => props.loading))
 const ns = useNamespace('switch')
 
 const { inputId } = useFormItemInputId(props, {
@@ -120,6 +119,7 @@ const { inputId } = useFormItemInputId(props, {
 })
 
 const switchSize = useSize()
+const switchDisabled = useDisabled(computed(() => props.loading))
 const isModelValue = ref(props.modelValue !== false)
 const input = ref<HTMLInputElement>()
 const core = ref<HTMLSpanElement>()
@@ -137,8 +137,8 @@ const coreStyle = computed<CSSProperties>(() => ({
 
 watch(
   () => props.modelValue,
-  () => {
-    isModelValue.value = true
+  (isBoolValue) => {
+    isBoolean(isBoolValue) && (isModelValue.value = isBoolValue)
   }
 )
 
@@ -244,6 +244,6 @@ defineExpose({
   /**
    *  @description manual focus to the switch component
    **/
-  focus
+  focus,
 })
 </script>
