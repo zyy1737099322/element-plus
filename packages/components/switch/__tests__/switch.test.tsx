@@ -117,7 +117,7 @@ describe('Switch.vue', () => {
         </div>
       `,
       methods: {
-        handleChange(val: any) {
+        handleChange(val: boolean) {
           this.target = val
         },
       },
