@@ -240,5 +240,10 @@ onMounted(() => {
   input.value!.checked = checked.value
 })
 
-defineExpose({ focus })
+defineExpose({
+  /**
+   *  @description manual focus to the switch component
+   **/
+  focus
+})
 </script>
