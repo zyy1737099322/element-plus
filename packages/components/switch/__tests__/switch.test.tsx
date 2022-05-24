@@ -191,6 +191,33 @@ describe('Switch.vue', () => {
     expect(vm.value).toEqual('100')
   })
 
+  test('default switch active-value is false', async () => {
+    const wrapper = mount({
+      components: {
+        'el-switch': Switch,
+      },
+      template: `
+        <div>
+          <el-switch v-model="value" :active-value="onValue" :inactive-value="offValue"></el-switch>
+        </div>
+      `,
+      data() {
+        return {
+          value: false,
+          onValue: false,
+          offValue: true,
+        }
+      },
+    })
+    const vm = wrapper.vm
+
+    const coreWrapper = wrapper.find('.el-switch__core')
+    await coreWrapper.trigger('click')
+    expect(vm.value).toEqual(true)
+    await coreWrapper.trigger('click')
+    expect(vm.value).toEqual(false)
+  })
+
   test('value is the single source of truth', async () => {
     const wrapper = mount({
       components: {

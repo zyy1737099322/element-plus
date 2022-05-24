@@ -120,7 +120,7 @@ const { inputId } = useFormItemInputId(props, {
 
 const switchSize = useSize()
 const switchDisabled = useDisabled(computed(() => props.loading))
-const isModelValue = ref(props.modelValue !== false)
+const isControlled = ref(props.value === false)
 const input = ref<HTMLInputElement>()
 const core = ref<HTMLSpanElement>()
 
@@ -137,20 +137,20 @@ const coreStyle = computed<CSSProperties>(() => ({
 
 watch(
   () => props.modelValue,
-  (isBoolValue) => {
-    isBoolean(isBoolValue) && (isModelValue.value = isBoolValue)
+  () => {
+    isControlled.value = true
   }
 )
 
 watch(
   () => props.value,
   () => {
-    isModelValue.value = false
+    isControlled.value = false
   }
 )
 
 const actualValue = computed(() => {
-  return isModelValue.value ? props.modelValue : props.value
+  return isControlled.value ? props.modelValue : props.value
 })
 
 const checked = computed(() => actualValue.value === props.activeValue)
@@ -173,7 +173,7 @@ watch(checked, (val) => {
   }
 })
 
-const handleChange = (): void => {
+const handleChange = () => {
   const val = checked.value ? props.inactiveValue : props.activeValue
   emit(UPDATE_MODEL_EVENT, val)
   emit(CHANGE_EVENT, val)
@@ -183,7 +183,7 @@ const handleChange = (): void => {
   })
 }
 
-const switchValue = (): void => {
+const switchValue = () => {
   if (switchDisabled.value) return
 
   const { beforeChange } = props
@@ -194,10 +194,8 @@ const switchValue = (): void => {
 
   const shouldChange = beforeChange()
 
-  const isExpectType = [isPromise(shouldChange), isBoolean(shouldChange)].some(
-    (i) => i
-  )
-  if (!isExpectType) {
+  const isPromiseOrBool = isPromise(shouldChange) || isBoolean(shouldChange)
+  if (!isPromiseOrBool) {
     throwError(
       COMPONENT_NAME,
       'beforeChange must return type `Promise<boolean>` or `boolean`'
