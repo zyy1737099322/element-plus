@@ -65,7 +65,7 @@ importers:
       resize-observer-polyfill: ^1.5.1
       rimraf: ^3.0.2
       sass: ^1.51.0
-      ts-morph: ^14.0.0
+      ts-morph: ^15.0.0
       tsx: ^3.4.0
       type-fest: ^2.12.2
       typescript: ^4.6.4
@@ -138,7 +138,7 @@ importers:
       resize-observer-polyfill: 1.5.1
       rimraf: 3.0.2
       sass: 1.51.0
-      ts-morph: 14.0.0
+      ts-morph: 15.0.0
       tsx: 3.4.0
       type-fest: 2.12.2
       typescript: 4.6.4
@@ -251,7 +251,7 @@ importers:
       lodash: ^4.17.21
       rollup: ^2.73.0
       rollup-plugin-esbuild: ^4.9.1
-      ts-morph: ^14.0.0
+      ts-morph: ^15.0.0
       unbuild: ^0.7.4
       unplugin-vue-define-options: ^0.6.1
       vue: ^3.2.33
@@ -273,7 +273,7 @@ importers:
       lodash: 4.17.21
       rollup: 2.73.0
       rollup-plugin-esbuild: 4.9.1_7adqdep3dyb6q46ys4q2gte2am
-      ts-morph: 14.0.0
+      ts-morph: 15.0.0
       unplugin-vue-define-options: 0.6.1_kpocjyzcqhd3i2mu3he43e7nee
     devDependencies:
       '@esbuild-kit/cjs-loader': 2.0.0
@@ -2715,8 +2715,8 @@ packages:
     resolution: {integrity: sha512-Ccy0NlLkzr0Ex2FKvh2X+OyERHXJ88XJ1MXtsI9y9fGexlaXaVTPzBCRBwIxFkORuOb+uBqeu+RqnpgYTEZRUQ==}
     dev: false
 
-  /@ts-morph/common/0.13.0:
-    resolution: {integrity: sha512-fEJ6j7Cu8yiWjA4UmybOBH9Efgb/64ZTWuvCF4KysGu4xz8ettfyaqFt8WZ1btCxXsGZJjZ2/3svOF6rL+UFdQ==}
+  /@ts-morph/common/0.15.0:
+    resolution: {integrity: sha512-QefRbadcwfBnd3HWrltpjRJprHgeKfQsnbyGbRF8pEjMqISAljJwq4wfRETxxojsmN4GWuJv3PWG+W7kBIHMMw==}
     dependencies:
       fast-glob: 3.2.11
       minimatch: 5.1.0
@@ -10577,10 +10577,10 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /ts-morph/14.0.0:
-    resolution: {integrity: sha512-tO8YQ1dP41fw8GVmeQAdNsD8roZi1JMqB7YwZrqU856DvmG5/710e41q2XauzTYrygH9XmMryaFeLo+kdCziyA==}
+  /ts-morph/15.0.0:
+    resolution: {integrity: sha512-OZkg0TI1h6FVe8DZXyBo6p7NfCN9EZZkkA736f243KzQ3cypYWtaLc9eyNn/JH/fWYfQ4d6wIA4oM0vElRTGcQ==}
     dependencies:
-      '@ts-morph/common': 0.13.0
+      '@ts-morph/common': 0.15.0
       code-block-writer: 11.0.0
 
   /ts-node/10.7.0_yt47zw2jvjnwulqv2sns2hfhee:
