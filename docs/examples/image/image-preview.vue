@@ -9,6 +9,7 @@
       :preview-src-list="srcList"
       :initial-index="4"
       fit="cover"
+      hide-on-click-modal
     />
   </div>
 </template>
